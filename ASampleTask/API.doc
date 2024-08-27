@@ -1,0 +1,71 @@
+root
+  /users
+    /register        Adding a new user
+    /verify          Verifying users Email 
+    /login           Login verified users
+    /resetPassword   reset password for an Email
+    /setPassword     Set new password with Email and resetToken
+
+
+   /products   
+     /allProducts          Showing all products
+     /allProducts/count    Returning products count
+     /userProducts         Showing all user`s products    
+     /userProducts/count   Returning user`s products count 
+     /addProduct           Adding new product for logined user
+     /deleteProduct        Deleting one product saved for logined user
+
+
+//input schema
+root
+  /users    (No login require for all /user  routes)
+    /register   METHOD: POST
+       name:string().max(30).min(3).required(),
+       family:string().max(30).min(3).required(),
+       email:string().email().max(100).lowercase().required(),
+       password: string().max(30).min(8).required()
+
+    /verify   METHOD: GET  with email & token as params
+       email: string().email().max(100).lowercase().required(),
+       token: string().required(),
+
+    /login   METHOD: POST
+       name:string().max(30).min(3).required(),
+       password: string().max(30).min(8).required()
+
+    /resetPassword   METHOD: POST
+       email: string().email().max(100).lowercase().required(),
+
+    /setPassword   METHOD: POST
+       email: string().email().max(100).lowercase().required(),
+       resetToken: string().required(),
+       newPassword: string().max(30).min(8).required()
+
+
+   /products
+     /allProducts   METHOD: POST
+        ( Valid user loggedin, Valid JWT in Header`s Bearer)
+        page: number().min(1).integer().required(),
+        size: number().min(1).integer().required(),
+
+     /allProducts/count   METHOD: POST
+        ( Valid user loggedin, Valid JWT in Header`s Bearer)
+
+     /userProducts   METHOD: POST
+        ( Valid user loggedin, Valid JWT in Header`s Bearer)
+        page: number().min(1).integer().required(),
+        size: number().min(1).integer().required(),
+
+     /userProducts/count     METHOD: POST
+        ( Valid user loggedin, Valid JWT in Header`s Bearer)
+
+     /addProduct    METHOD: POST
+        ( Valid user loggedin, Valid JWT in Header`s Bearer)
+        ( dadding product for user)
+        productName: string().min(3).max(100 ).required(),    
+        description: string().min(10).max(500).required(),
+
+     /deleteProduct   METHOD: DELETE
+        ( Valid user loggedin, Valid JWT in Header`s Bearer)
+        ( deleting product for user)
+        productName: string().min(3).max(100 ).required(),   
